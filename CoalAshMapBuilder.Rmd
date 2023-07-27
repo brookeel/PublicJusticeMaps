@@ -32,7 +32,7 @@ ponds_per_state <- read_csv(url(pond_sum_file))
 
 coal_ash_ponds <- st_read("/vsicurl/https://github.com/brookeel/PublicJusticeMaps/raw/main/CoalAshPonds.shp")
 
-coal_ash_ponds <- coal_ash_ponds %>% st_jitter(factor = 0.0045)
+coal_ash_ponds <- coal_ash_ponds %>% st_jitter(factor = 0.003)
 ```
 
 ##ACS
@@ -57,7 +57,7 @@ coal_ash_ponds <- coal_ash_ponds %>% sf::st_transform(crs=4326)
 ```{r}
 colorscheme_states <- colorBin("Purples", domain = us_map_with_ponds$TOTAL_PONDS)
 
-state_ponds_popup_text <- paste0("In ", us_map_with_ponds$NAME, ", there are ", as.character(us_map_with_ponds$TOTAL_PONDS), " coal ash ponds.")
+state_ponds_popup_text <- paste0("Number of coal ash ponds in ", us_map_with_ponds$NAME, ": ", as.character(us_map_with_ponds$TOTAL_PONDS))
 ```
 
 ##Variables for points
@@ -86,7 +86,7 @@ coal_ash_leaflet <- leaflet(us_map_with_ponds) %>%
              weight = 0.5,
              color = "black",
              fillOpacity = 1,
-             radius = 5000,
+             radius = 4000,
              popup = points_popup_text
              ) %>%
   addLegend(pal = colorscheme_states,
