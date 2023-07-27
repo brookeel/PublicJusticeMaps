@@ -1,39 +1,51 @@
-"state","numponds"
-"AK",3
-"AL",13
-"AR",5
-"AZ",6
-"CO",12
-"FL",7
-"GA",19
-"IA",28
-"IL",38
-"IN",42
-"KS",10
-"KY",28
-"LA",6
-"MA",3
-"MI",24
-"MN",12
-"MO",35
-"MS",4
-"MT",15
-"NC",26
-"ND",10
-"NE",1
-"NJ",6
-"NM",4
-"NV",6
-"NY",3
-"OH",22
-"OK",3
-"PA",14
-"SC",13
-"SD",1
-"TN",13
-"TX",35
-"UT",2
-"VA",13
-"WI",12
-"WV",6
-"WY",15
+STATE,NAME,TOTAL_PONDS
+AL,Alabama,13
+AK,Alaska,3
+AZ,Arizona,6
+AR,Arkansas,5
+CA,California,0
+CO,Colorado,12
+CT,Connecticut,0
+DE,Delaware,0
+FL,Florida,7
+GA,Georgia,19
+HI,Hawaii,0
+ID,Idaho,0
+IL,Illinois,38
+IN,Indiana,42
+IA,Iowa,28
+KS,Kansas,10
+KY,Kentucky,28
+LA,Louisiana,6
+ME,Maine,0
+MD,Maryland,0
+MA,Massachusetts,3
+MI,Michigan,24
+MN,Minnesota,12
+MS,Mississippi,4
+MO,Missouri,35
+MT,Montana,15
+NE,Nebraska,1
+NV,Nevada,6
+NH,New Hampshire,0
+NJ,New Jersey,6
+NM,New Mexico,4
+NY,New York,3
+NC,North Carolina,26
+ND,North Dakota,10
+OH,Ohio,22
+OK,Oklahoma,3
+OR,Oregon,0
+PA,Pennsylvania,14
+RI,Rhode Island,0
+SC,South Carolina,13
+SD,South Dakota,1
+TN,Tennessee,13
+TX,Texas,35
+UT,Utah,2
+VT,Vermont,0
+VA,Virginia,13
+WA,Washington,0
+WV,West Virginia,6
+WI,Wisconsin,12
+WY,Wyoming,15

@@ -16,6 +16,32 @@ pacman::p_load(tidyverse,
                tidycensus,
                sf,
                scales,
-              leaflet)
+              leaflet,
+              readr)
+```
+
+##Files
+```{r}
+pond_sum_file="https://raw.githubusercontent.com/brookeel/PublicJusticeMaps/main/PondsPerState.csv"
+
+ponds_per_state <- read_csv(url(pond_sum_file))
+
+coal_ash_ponds <- st_read("/vsicurl/https://github.com/brookeel/PublicJusticeMaps/raw/main/CoalAshPonds.shp")
+```
+
+##ACS
+```{r}
+us_pop_map <- get_acs(geography = "state", 
+              variables = c(population = "B01003_001"), 
+              year = 2021,
+              geometry = T,
+              resolution = "20m"
+              )
+```
+
+##Map transformation
+```{r}
+#ponds_per_state_map <- sf::st_join(us_pop_map, ponds_per_state)
+
 ```
 
