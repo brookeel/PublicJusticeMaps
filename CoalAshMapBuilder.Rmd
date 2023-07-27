@@ -1,0 +1,21 @@
+---
+title: "CoalAshPondsWebmap"
+author: "Brooke Elliott"
+date: "2023-07-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = '~/Documents/dev/PublicJusticeMaps')
+```
+
+##Setup
+```{r}
+pacman::p_load(tidyverse,
+               tidycensus,
+               sf,
+               scales,
+              leaflet)
+```
+
