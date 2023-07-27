@@ -71,7 +71,7 @@ points_popup_text <- paste0("This pond is near ", coal_ash_ponds$name_of_pl, " i
 ```{r}
 coal_ash_leaflet <- leaflet(us_map_with_ponds) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
-  setView(-89.469754, 40.303081, zoom = 3) %>%
+  setView(-89.469754, 40.303081, zoom = 4) %>%
   addPolygons(data = us_map_with_ponds,
               fillColor = ~colorscheme_states(TOTAL_PONDS),
               weight = 1,
