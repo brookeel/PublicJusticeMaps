@@ -32,7 +32,7 @@ ponds_per_state <- read_csv(url(pond_sum_file))
 
 coal_ash_ponds <- st_read("/vsicurl/https://github.com/brookeel/PublicJusticeMaps/raw/main/CoalAshPonds.shp")
 
-coal_ash_ponds <- coal_ash_ponds %>% st_jitter(factor = 0.003)
+coal_ash_ponds <- coal_ash_ponds %>% st_jitter(factor = 0.001)
 ```
 
 ##ACS
@@ -57,21 +57,21 @@ coal_ash_ponds <- coal_ash_ponds %>% sf::st_transform(crs=4326)
 ```{r}
 colorscheme_states <- colorBin("Purples", domain = us_map_with_ponds$TOTAL_PONDS)
 
-state_ponds_popup_text <- paste0("Number of coal ash ponds in ", us_map_with_ponds$NAME, ": ", as.character(us_map_with_ponds$TOTAL_PONDS))
+state_ponds_popup_text <- paste0("Number of coal ash ponds in ", us_map_with_ponds$NAME, ": ", as.character(us_map_with_ponds$TOTAL_PONDS), ".")
 ```
 
 ##Variables for points
 ```{r}
 colorscheme_ponds <- colorBin("RdYlGn", domain = coal_ash_ponds$overall_ei)
 
-points_popup_text <- paste0("This pond is near ", coal_ash_ponds$name_of_pl, " in ", coal_ash_ponds$city, ", ", coal_ash_ponds$state, ". It is #", coal_ash_ponds$overall_ei, " in the Environmental Integrity Project's contamination ranking. It is ", coal_ash_ponds$liner_stat, ".")
+points_popup_text <- paste0("This pond is near ", coal_ash_ponds$name_of_pl, " in ", coal_ash_ponds$city, ", ", coal_ash_ponds$state, ". It is #", coal_ash_ponds$overall_ei, " in the Environmental Integrity Project's contamination ranking. It is ", coal_ash_ponds$liner_stat, ". ", coal_ash_ponds$x3_mi_poc_, " of the population living within three miles of this pond are people of color and ", coal_ash_ponds$x3_mi_low_, " are in low-income households.")
 ```
 
 ##Leaflet creation
 ```{r}
 coal_ash_leaflet <- leaflet(us_map_with_ponds) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
-  setView(-89.469754, 40.303081, zoom = 4) %>%
+  setView(-89.469754, 40.303081, zoom = 3) %>%
   addPolygons(data = us_map_with_ponds,
               fillColor = ~colorscheme_states(TOTAL_PONDS),
               weight = 1,
@@ -85,8 +85,8 @@ coal_ash_leaflet <- leaflet(us_map_with_ponds) %>%
              stroke = TRUE,
              weight = 0.5,
              color = "black",
-             fillOpacity = 1,
-             radius = 4000,
+             fillOpacity = 0.8,
+             radius = 3000,
              popup = points_popup_text
              ) %>%
   addLegend(pal = colorscheme_states,
