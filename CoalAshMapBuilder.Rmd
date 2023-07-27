@@ -17,7 +17,11 @@ pacman::p_load(tidyverse,
                sf,
                scales,
               leaflet,
-              readr)
+              readr,
+              raster,
+              rgdal,
+              maptools,
+              htmlwidgets)
 ```
 
 ##Files
@@ -27,6 +31,8 @@ pond_sum_file="https://raw.githubusercontent.com/brookeel/PublicJusticeMaps/main
 ponds_per_state <- read_csv(url(pond_sum_file))
 
 coal_ash_ponds <- st_read("/vsicurl/https://github.com/brookeel/PublicJusticeMaps/raw/main/CoalAshPonds.shp")
+
+coal_ash_ponds <- coal_ash_ponds %>% st_jitter(factor = 0.0045)
 ```
 
 ##ACS
@@ -41,7 +47,66 @@ us_pop_map <- get_acs(geography = "state",
 
 ##Map transformation
 ```{r}
-#ponds_per_state_map <- sf::st_join(us_pop_map, ponds_per_state)
+us_map_with_ponds <- merge(us_pop_map, ponds_per_state, by='NAME')
 
+us_map_with_ponds <- us_map_with_ponds %>% sf::st_transform(crs=4326)
+coal_ash_ponds <- coal_ash_ponds %>% sf::st_transform(crs=4326)
 ```
+
+##Variables for states
+```{r}
+colorscheme_states <- colorBin("Purples", domain = us_map_with_ponds$TOTAL_PONDS)
+
+state_ponds_popup_text <- paste0("In ", us_map_with_ponds$NAME, ", there are ", as.character(us_map_with_ponds$TOTAL_PONDS), " coal ash ponds.")
+```
+
+##Variables for points
+```{r}
+colorscheme_ponds <- colorBin("RdYlGn", domain = coal_ash_ponds$overall_ei)
+
+points_popup_text <- paste0("This pond is near ", coal_ash_ponds$name_of_pl, " in ", coal_ash_ponds$city, ", ", coal_ash_ponds$state, ". It is #", coal_ash_ponds$overall_ei, " in the Environmental Integrity Project's contamination ranking. It is ", coal_ash_ponds$liner_stat, ".")
+```
+
+##Leaflet creation
+```{r}
+coal_ash_leaflet <- leaflet(us_map_with_ponds) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(-89.469754, 40.303081, zoom = 4) %>%
+  addPolygons(data = us_map_with_ponds,
+              fillColor = ~colorscheme_states(TOTAL_PONDS),
+              weight = 1,
+              opacity = 0.4,
+              color = "gray",
+              fillOpacity = 0.6,
+              popup = state_ponds_popup_text) %>%
+  addCircles(data = coal_ash_ponds,
+             fill = TRUE,
+             fillColor = ~colorscheme_ponds(overall_ei),
+             stroke = TRUE,
+             weight = 0.5,
+             color = "black",
+             fillOpacity = 1,
+             radius = 5000,
+             popup = points_popup_text
+             ) %>%
+  addLegend(pal = colorscheme_states,
+            values = us_map_with_ponds$TOTAL_PONDS,
+            position = "bottomright",
+            title = "Number of Ponds per State") %>%
+  addLegend(pal = colorscheme_ponds,
+            values = coal_ash_ponds$overall_ei,
+            position = "topright",
+            title = "Overall EIP Contamination Ranking")
+```
+
+##Check
+```{r}
+coal_ash_leaflet
+```
+
+##Html output
+```{r}
+saveWidget(coal_ash_leaflet, 'coalashmap.html', selfcontained = FALSE)
+```
+
 
